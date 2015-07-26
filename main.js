@@ -118,8 +118,10 @@ function createWebServer(spec, expressApp, config, sessionStore, cb) {
 		serverProtocol = 'http';
 	}
 
-	server.listen(spec.port, function() {
-		logger.info('WebIRC is listening for', serverProtocol, 'connections on port', spec.port);
+        var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
+        server.listen( spec.port, ipaddress, function() {
+                logger.info('WebIRC is listening for', serverProtocol, 'connections on port', spec.port, 'on host', ipaddress);
+
 
 		var wsServer = new wss.Server({
 			server: server
